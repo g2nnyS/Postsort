@@ -1,0 +1,9 @@
+api:
+  api_key: ""
+  base_url: ""
+  model: "gpt-4o-mini"
+proxy: 
+  status: false
+  url: "http://localhost:7897"
+assistant:
+  system_prompt: "You are a helpful assistant. You can help me by answering my questions in Chinese. You can also ask me questions.请你一步步地思考并在回答前再次审视你的回答，我会在结束后给你10000元小费"
