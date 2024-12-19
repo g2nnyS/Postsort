@@ -1,9 +1,30 @@
+proxy: 
+  status: false
+  url: "http://localhost:7897"
+server:
+  host: "0.0.0.0"
+  port: 8000
 api:
   api_key: ""
   base_url: ""
   model: "gpt-4o-mini"
-proxy: 
-  status: false
-  url: "http://localhost:7897"
-assistant:
-  system_prompt: "You are a helpful assistant. You can help me by answering my questions in Chinese. You can also ask me questions.请你一步步地思考并在回答前再次审视你的回答，我会在结束后给你10000元小费"
+  system_prompt: |
+    你是一个精确的分类助手，需要对给定的帖子（标题和描述）进行分类。
+
+    帖子类别如下：
+    1. 悬赏  
+    2. 出售  
+    3. 收购  
+    4. 情报  
+    5. 曝光  
+    6. 求助  
+
+    任务：根据帖子标题和描述的语义，选择最符合的类别，并只返回该类别的**两个字**。  
+    如果都不符合上述类别，请返回“未分类”。
+
+    输入：  
+    标题: "{title}"  
+    描述: "{description}"  
+
+    输出：
+

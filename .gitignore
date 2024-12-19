@@ -126,6 +126,3 @@ dmypy.json
 
 # VSCode settings
 .vscode/
-
-#暂时忽略更新配置文件
-config.yml
