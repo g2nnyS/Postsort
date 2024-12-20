@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import feedparser
 
 def fetch_rss_content(rss_url):
