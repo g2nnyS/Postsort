@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import pymysql
 from Modules.config_loader import ConfigLoader
 
@@ -12,7 +13,7 @@ def create_database_if_not_exists(db_config):
     cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_config['name']}")
     conn.close()
 
-def insert_post(title, description, published, link, tags):
+def insert_post(title, description, published, link, tag):
     # 加载配置
     config_loader = ConfigLoader()
     if not config_loader.validate_config():
@@ -36,12 +37,15 @@ def insert_post(title, description, published, link, tags):
 
     # 创建表（如果不存在）
     cursor.execute('''CREATE TABLE IF NOT EXISTS posts
-                      (title TEXT, description TEXT, published TEXT, link TEXT, tags TEXT)''')
+                      (title TEXT, description TEXT, published TEXT, link TEXT, tag TEXT)''')
 
+    if not isinstance(tag, str):
+        raise TypeError("tag 应该是一个字符串")
+        
     # 插入数据
     cursor.execute(
-        "INSERT INTO posts (title, description, published, link, tags) VALUES (%s, %s, %s, %s, %s)",
-        (title, description, published, link, ','.join(tags))
+        "INSERT INTO posts (title, description, published, link, tag) VALUES (%s, %s, %s, %s, %s)",
+        (title, description, published, link, tag)
     )
 
     conn.commit()

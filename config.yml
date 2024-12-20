@@ -13,8 +13,8 @@ database:
 rss:
   url: "https://rss.nodeseek.com/"
 api:
-  api_key: ""
-  base_url: ""
+  api_key: "sk-ganyu"
+  base_url: "http://localhost:8080/v1/"
   model: "gpt-4o-mini"
   system_prompt: |
     你是一个精确的分类助手，需要对给定的帖子（标题和描述）进行分类。
@@ -23,9 +23,9 @@ api:
     1. 悬赏  
     2. 出售  
     3. 收购  
-    4. 情报  
+    4. 情报
     5. 曝光  
-    6. 求助  
+    6. 求助
 
     任务：根据帖子标题和描述的语义，选择最符合的类别，并只返回该类别的**两个字**。  
     如果都不符合上述类别，请返回“未分类”。

@@ -16,7 +16,7 @@ def fetch_rss_content(rss_url):
             "title": entry.get("title", "无标题"),
             "description": entry.get("description", "无描述"),
             "link": entry.get("link", ""),
-            "published": entry.get("published", "未知时间"),
+            "published": str(entry.get("published", "未知时间")),
         }
         posts.append(post)
 
