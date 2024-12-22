@@ -14,7 +14,14 @@ class ResponseHandler:
     def get_result(self) -> List[str]:
         if not self.response_complete:
             return []
-        return " ".join(self.response_content).split()
+        
+        valid_tags = ["悬赏", "出售", "收购", "情报", "曝光", "求助", "抽奖", "未分类"]
+        result = "".join(self.response_content).strip()
+        
+        # 确保结果是有效的标签
+        if result in valid_tags:
+            return [result]
+        return ["未分类"]
 
     def is_complete(self) -> bool:
         return self.response_complete

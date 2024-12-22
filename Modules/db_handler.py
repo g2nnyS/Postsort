@@ -1,8 +1,10 @@
 # -*- coding: UTF-8 -*-
 import pymysql
+import logging
 from Modules.config_loader import ConfigLoader
 
 def create_database_if_not_exists(db_config):
+    logging.debug(f"正在检查数据库 {db_config['name']} 是否存在")
     conn = pymysql.connect(
         host=db_config["host"],
         port=db_config["port"],
@@ -14,6 +16,7 @@ def create_database_if_not_exists(db_config):
     conn.close()
 
 def insert_post(title, description, published, link, tag):
+    logging.debug(f"正在插入文章: {link}")
     # 加载配置
     config_loader = ConfigLoader()
     if not config_loader.validate_config():

@@ -61,8 +61,20 @@ def get_posts():
 
 if __name__ == "__main__":
     # 配置日志
-    logging.basicConfig(level=logging.INFO)
+    log_level = config["logging"]["level"]
+    logging.basicConfig(
+        level=getattr(logging, log_level),
+        format='%(asctime)s - %(levelname)s - %(message)s'
+    )
+    
+    # 设置所有模块的日志级别
+    for logger_name in logging.root.manager.loggerDict:
+        logger = logging.getLogger(logger_name)
+        logger.setLevel(getattr(logging, log_level))
+    
+    # 单独设置某些模块的日志级别
     logging.getLogger("httpx").setLevel(logging.WARNING)  # 抑制 httpx 的请求日志
+    logging.getLogger("uvicorn").setLevel(logging.WARNING)  # 抑制 uvicorn 的请求日志
     
     threading.Thread(target=start_fetching, daemon=True).start() # 启动定时任务
     uvicorn.run(app, host=config["server"]["host"], port=config["server"]["port"])

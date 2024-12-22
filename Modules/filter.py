@@ -42,11 +42,11 @@ def fetch_and_store_posts():
                             logging.info(f"文章被标记为未分类: {link}")
                         
                         # 确保完全处理完一条后再处理下一条
-                        time.sleep(1)
+                        time.sleep(3)
                             
                     except Exception as e:
                         logging.error(f"处理文章失败: {link} - {str(e)}")
-                        time.sleep(2)
+                        time.sleep(3)
                         continue
                 
                 time.sleep(60)  # 每分钟抓取一次

@@ -3,7 +3,6 @@ import openai
 import os
 import time
 import logging
-from Modules.config_loader import ConfigLoader
 from Modules.response_handler import ResponseHandler
 
 class OpenAIHandler:
@@ -14,7 +13,7 @@ class OpenAIHandler:
         self.base_url = config["api"]["base_url"]
         self.model = config["api"]["model"]
         self.proxy = config["proxy"]["url"] if config["proxy"]["status"] else None
-        self.system_prompt = config["api"]["system_prompt"]
+        self.system_prompt = str(config["api"]["system_prompt"]).strip()
         openai.api_key = self.api_key
         openai.base_url = self.base_url
         self.conversation_history = [{"role": "system", "content": self.system_prompt}]
@@ -31,8 +30,7 @@ class OpenAIHandler:
             logging.info("状态：未使用代理")
 
     def analyze_intent(self, user_input, retries=3):
-        self.conversation_history = [{"role": "system", "content": self.system_prompt}, 
-                                   {"role": "user", "content": user_input}]
+        self.conversation_history = [{"role": "system", "content": self.system_prompt}, {"role": "user", "content": user_input}]
         handler = ResponseHandler()
         
         for attempt in range(retries):
@@ -42,7 +40,6 @@ class OpenAIHandler:
                     model=self.model,
                     messages=self.conversation_history,
                     stream=True,
-                    request_timeout=30
                 )
                 
                 content_received = False
@@ -77,8 +74,10 @@ class OpenAIHandler:
                     
             except Exception as e:
                 logging.error(f"API调用错误: {str(e)}")
-                time.sleep(2)
-                continue
+                if attempt < retries - 1:
+                    time.sleep(1)
+                    continue
+                return ["未分类"]  # 发生错误时返回未分类
                 
         logging.error("达到最大重试次数，返回空结果")
-        return []
+        return ["未分类"]  # 所有重试失败后返回未分类
