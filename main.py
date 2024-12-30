@@ -4,10 +4,12 @@ import pymysql
 import threading
 import logging
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List
 from Modules.config_loader import ConfigLoader
 from Modules.filter import start_fetching
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
@@ -16,9 +18,19 @@ config_loader = ConfigLoader()
 if not config_loader.validate_config():
     raise ValueError("配置文件验证失败")
 
+#配置 CORS 中间件
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 允许所有源
+    allow_credentials=True,
+    allow_methods=["*"],  # 允许所有方法
+    allow_headers=["*"],  # 允许所有请求头
+)
+
 config = config_loader.config
 
 class Post(BaseModel):
+    id: int
     title: str
     description: str
     published: str
@@ -45,15 +57,17 @@ def get_posts():
         rows = cursor.fetchall()
         conn.close()
 
+        # 给查询结果添加行号作为 id
         return [
             Post(
+                id=idx + 1,  # 行号作为 id
                 title=row[0],
                 description=row[1],
                 published=row[2],
                 link=row[3],
                 tag=row[4].strip()
             )
-            for row in rows
+            for idx, row in enumerate(rows)
         ]
     except Exception as e:
         logging.error(f"获取帖子列表时出错: {str(e)}")
