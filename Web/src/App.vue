@@ -22,7 +22,7 @@ export default defineComponent({
   },
   setup() {
     // 这里可以从本地存储或配置中读取背景图片URL
-    const backgroundImage = ref("/bg.png"); // 替换为默认背景图URL
+    const backgroundImage = ref("/bg.webp"); // 替换为默认背景图URL
 
     const backgroundStyle = computed(() => ({
       backgroundImage: `url(${backgroundImage.value})`,
