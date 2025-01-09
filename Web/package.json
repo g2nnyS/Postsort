@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build"
+    "type-check": "vue-tsc --build",
+    "start": "vite --mode production",
+    "serve": "vite preview --host --port 80"
   },
   "dependencies": {
     "@vue/runtime-core": "^3.5.13",
