@@ -49,7 +49,7 @@ def fetch_and_store_posts():
                         time.sleep(3)
                         continue
                 
-                time.sleep(60)  # 每分钟抓取一次
+                time.sleep(300)  # 每5分钟抓取一次
                 
             except Exception as e:
                 logging.error(f"抓取过程出错: {str(e)}")
